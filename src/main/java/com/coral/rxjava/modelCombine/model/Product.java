@@ -8,8 +8,8 @@ import java.util.List;
 public class Product {
 
     private String name;
-    private List<Customer> customers;
-    private List<Insured> insureds;
+    private Customer customers;
+    private Insured insureds;
 
     public String getName() {
         return name;
@@ -19,19 +19,19 @@ public class Product {
         this.name = name;
     }
 
-    public List<Customer> getCustomers() {
+    public Customer getCustomers() {
         return customers;
     }
 
-    public void setCustomers(List<Customer> customers) {
+    public void setCustomers(Customer customers) {
         this.customers = customers;
     }
 
-    public List<Insured> getInsureds() {
+    public Insured getInsureds() {
         return insureds;
     }
 
-    public void setInsureds(List<Insured> insureds) {
+    public void setInsureds(Insured insureds) {
         this.insureds = insureds;
     }
 }

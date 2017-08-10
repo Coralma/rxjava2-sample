@@ -1,63 +1,63 @@
 package com.coral.rxjava.operation;
 
-import com.coral.rxjava.operation.model.Student;
+import com.coral.rxjava.modelCombine.DaoCallable;
+import com.coral.rxjava.modelCombine.callable.CustomerCallable;
+import com.coral.rxjava.modelCombine.callable.InsuredCallable;
+import com.coral.rxjava.modelCombine.model.Customer;
+import com.coral.rxjava.modelCombine.model.Insured;
+import com.coral.rxjava.modelCombine.model.Product;
+import com.google.gson.Gson;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function3;
+import io.reactivex.schedulers.Schedulers;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by ccc on 2017/8/10.
  */
-public class ZipUsage {
+public class ZipAdvanceUsage {
+
+    private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
 
     public static void main(String[] args) throws InterruptedException {
-        Observable<Integer> observable = Observable.create(new ObservableOnSubscribe<Integer>() {
-            @Override
-            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
-                e.onNext(1);
-                e.onNext(2);
-                e.onNext(3);
-                e.onNext(4);
-            }
-        });
+        Long productId = 6000l;
 
-        Observable<String> observable1 = Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(ObservableEmitter<String> e) throws Exception {
-                e.onNext("这是");
-                e.onNext("这个是");
-                e.onNext("这个则是");
-            }
-        });
+        ZipAdvanceUsage zipAdvanceUsage = new ZipAdvanceUsage();
+        Observable<Customer> customerObservable = zipAdvanceUsage.createCallableObservable(new CustomerCallable(),productId);
+        Observable<Insured> insuredObservable = zipAdvanceUsage.createCallableObservable(new InsuredCallable(),productId);
 
-        Observable<String> observable2 = Observable.create(new ObservableOnSubscribe<String>() {
+        Observable.zip(customerObservable, insuredObservable, new BiFunction<Customer, Insured, Product>() {
             @Override
-            public void subscribe(ObservableEmitter<String> e) throws Exception {
-                e.onNext("个");
-                e.onNext("只");
-                e.onNext("条");
-                e.onNext("张");
-                e.onNext("本");
-                e.onNext("副");
+            public Product apply(Customer customer, Insured insured) throws Exception {
+                Product p = new Product();
+                p.setInsureds(insured);
+                p.setCustomers(customer);
+                return p;
+            }
+        }).subscribe(new Consumer<Product>() {
+            @Override
+            public void accept(Product product) throws Exception {
+                Gson gson = new Gson();
+                System.out.println(gson.toJson(product));
             }
         });
+    }
 
-        Observable.zip(observable, observable1, observable2, new Function3<Integer, String, String, String>() {
+    protected <R> Observable<R> createCallableObservable(final DaoCallable<R> callable, final Long productId) {
+        return Observable.create(new ObservableOnSubscribe<R>() {
             @Override
-            public String apply(Integer integer, String s, String s2) throws Exception {
-                return s + integer + s2;
+            public void subscribe(ObservableEmitter<R> e) throws Exception {
+                System.out.println(callable.getClass().getSimpleName() + " , thread is " + Thread.currentThread().getName());
+                R result = callable.call(productId);
+                e.onNext(result);
             }
-        }).subscribe(new Consumer<String>() {
-            @Override
-            public void accept(String s) throws Exception {
-                System.out.println(s);
-            }
-        });
+        }).subscribeOn(Schedulers.from(fixedThreadPool));
     }
 }

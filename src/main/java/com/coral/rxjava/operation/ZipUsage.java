@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by ccc on 2017/8/10.
  */
-public class ZipOperationUsage {
+public class ZipUsage {
 
     public static void main(String[] args) throws InterruptedException {
         Observable<Integer> observable = Observable.create(new ObservableOnSubscribe<Integer>() {
@@ -59,6 +59,5 @@ public class ZipOperationUsage {
                 System.out.println(s);
             }
         });
-        //Thread.currentThread().sleep(Long.MAX_VALUE);
     }
 }
