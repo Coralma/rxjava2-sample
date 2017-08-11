@@ -7,16 +7,20 @@ import java.util.List;
  */
 public class Product {
 
-    private String name;
+    private Long id;
     private Customer customers;
     private Insured insureds;
 
-    public String getName() {
-        return name;
+    public Product(Long id) {
+        this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Customer getCustomers() {

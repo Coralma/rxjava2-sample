@@ -68,7 +68,7 @@ public class ModelCombineMain {
             @Override
             public Product apply(Customer customer, Insured insured) throws Exception {
                 System.out.println("Observable.zip, thread is " + Thread.currentThread().getName());
-                Product product = new Product();
+                Product product = new Product(1l);
                 product.setCustomers(customer);
                 product.setInsureds(insured);
                 return product;

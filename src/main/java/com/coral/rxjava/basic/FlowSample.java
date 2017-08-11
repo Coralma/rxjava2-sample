@@ -13,7 +13,7 @@ import io.reactivex.functions.Function;
 public class FlowSample {
 
     public static void main(String[] args) {
-        final Product product = new Product();
+        final Product product = new Product(1l);
         /*Observable.create(new ObservableOnSubscribe<Product>() {
             @Override
             public void subscribe(ObservableEmitter<Product> observableEmitter) throws Exception {

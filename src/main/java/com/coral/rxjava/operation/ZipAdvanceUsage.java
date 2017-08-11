@@ -36,7 +36,7 @@ public class ZipAdvanceUsage {
         Observable.zip(customerObservable, insuredObservable, new BiFunction<Customer, Insured, Product>() {
             @Override
             public Product apply(Customer customer, Insured insured) throws Exception {
-                Product p = new Product();
+                Product p = new Product(1l);
                 p.setInsureds(insured);
                 p.setCustomers(customer);
                 return p;
