@@ -4,31 +4,40 @@ import com.coral.rxjava.ccc.model.AuditReportVO;
 import com.coral.rxjava.ccc.model.VehicleClaimParamVO;
 import com.google.common.collect.Maps;
 
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by ccc on 2017/8/14.
  */
-public class LoadingContext {
+public class LoadContext {
 
-    VehicleClaimParamVO claimVO;
-    AuditReportVO reportVO;
+    List<VehicleClaimParamVO> claimVOList;
+    List<AuditReportVO> reportVOList;
     Map<Object, Object> contextMap = Maps.newHashMap();
 
-    public VehicleClaimParamVO getClaimVO() {
-        return claimVO;
+    public List<VehicleClaimParamVO> getClaimVOList() {
+        return claimVOList;
     }
 
-    public void setClaimVO(VehicleClaimParamVO claimVO) {
-        this.claimVO = claimVO;
+    public void setClaimVOList(List<VehicleClaimParamVO> claimVOList) {
+        this.claimVOList = claimVOList;
     }
 
-    public AuditReportVO getReportVO() {
-        return reportVO;
+    public List<AuditReportVO> getReportVOList() {
+        return reportVOList;
     }
 
-    public void setReportVO(AuditReportVO reportVO) {
-        this.reportVO = reportVO;
+    public void setReportVOList(List<AuditReportVO> reportVOList) {
+        this.reportVOList = reportVOList;
+    }
+
+    public Map<Object, Object> getContextMap() {
+        return contextMap;
+    }
+
+    public void setContextMap(Map<Object, Object> contextMap) {
+        this.contextMap = contextMap;
     }
 
     public void put(Object key, Object value) {
