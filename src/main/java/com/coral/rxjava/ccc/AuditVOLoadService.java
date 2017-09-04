@@ -11,6 +11,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,18 +22,18 @@ public class AuditVOLoadService {
 
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
 
-    public List<AuditReportVO> load(final List<VehicleClaimParamVO> vehicleClaimParamVOList) {
-        Observable<List<AuditReportVO>> productObservable = Observable.create(new ObservableOnSubscribe<List<VehicleClaimParamVO>>() {
+    public List<AuditReportVO> load(final Map<Long, VehicleClaimParamVO> claimParamVOMap) {
+        Observable<List<AuditReportVO>> productObservable = Observable.create(new ObservableOnSubscribe<Map<Long, VehicleClaimParamVO>>() {
             @Override
-            public void subscribe(ObservableEmitter<List<VehicleClaimParamVO>> e) throws Exception {
-                e.onNext(vehicleClaimParamVOList);
+            public void subscribe(ObservableEmitter<Map<Long, VehicleClaimParamVO>> e) throws Exception {
+                e.onNext(claimParamVOMap);
                 e.onComplete();
             }
-        }).map(new Function<List<VehicleClaimParamVO>, List<AuditReportVO>>() {
+        }).map(new Function<Map<Long, VehicleClaimParamVO>, List<AuditReportVO>>() {
             @Override
-            public List<AuditReportVO> apply(List<VehicleClaimParamVO> vehicleClaimParamVO) throws Exception {
+            public List<AuditReportVO> apply(Map<Long, VehicleClaimParamVO> claimParamVOMap) throws Exception {
                 List<AuditReportVO> auditReportVOs = Lists.newArrayList();
-                for(VehicleClaimParamVO claimParamVO : vehicleClaimParamVO) {
+                for(VehicleClaimParamVO claimParamVO : claimParamVOMap.values()) {
                     AuditReportVO auditReportVO = new AuditReportVO(claimParamVO.getClaimId());
                     auditReportVO.setClaimId(claimParamVO.getClaimId());
                     auditReportVO.setClaimData(claimParamVO.getClaimData());

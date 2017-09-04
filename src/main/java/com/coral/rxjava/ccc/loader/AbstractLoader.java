@@ -3,6 +3,7 @@ package com.coral.rxjava.ccc.loader;
 import com.google.common.collect.Lists;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by ccc on 2017/8/15.
@@ -23,4 +24,16 @@ public class AbstractLoader {
         this.children.add(child);
     }
 
+    public void randomSleep() {
+        try {
+            Thread.sleep(randomNumber(100, 300));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int randomNumber(int min, int max) {
+        Random random = new Random();
+        return random.nextInt(max - min + 1) + min;
+    }
 }

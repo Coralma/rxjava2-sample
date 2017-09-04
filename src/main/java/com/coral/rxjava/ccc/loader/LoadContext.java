@@ -14,6 +14,8 @@ public class LoadContext {
 
     List<VehicleClaimParamVO> claimVOList;
     List<AuditReportVO> reportVOList;
+    Map<Long, VehicleClaimParamVO> claimParamVOMap;
+    Map<Long, AuditReportVO> auditReportVOMap;
     Map<Object, Object> contextMap = Maps.newHashMap();
 
     public List<VehicleClaimParamVO> getClaimVOList() {
@@ -46,5 +48,21 @@ public class LoadContext {
 
     public void get(Object key) {
         contextMap.get(key);
+    }
+
+    public Map<Long, VehicleClaimParamVO> getClaimParamVOMap() {
+        return claimParamVOMap;
+    }
+
+    public void setClaimParamVOMap(Map<Long, VehicleClaimParamVO> claimParamVOMap) {
+        this.claimParamVOMap = claimParamVOMap;
+    }
+
+    public Map<Long, AuditReportVO> getAuditReportVOMap() {
+        return auditReportVOMap;
+    }
+
+    public void setAuditReportVOMap(Map<Long, AuditReportVO> auditReportVOMap) {
+        this.auditReportVOMap = auditReportVOMap;
     }
 }

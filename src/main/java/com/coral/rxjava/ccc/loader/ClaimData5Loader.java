@@ -11,8 +11,9 @@ public class ClaimData5Loader extends AbstractLoader implements ILoader {
     public void load(LoadContext loadContext) {
         String name = this.getClass().getSimpleName();
         System.out.println(name + " thread is " + Thread.currentThread().getName());
-        for(VehicleClaimParamVO p: loadContext.getClaimVOList()) {
+        for(VehicleClaimParamVO p: loadContext.getClaimParamVOMap().values()) {
             p.setClaimData5(name + "-" + p.getClaimId());
         }
+        randomSleep();
     }
 }

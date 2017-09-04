@@ -56,25 +56,16 @@ public class AuditRuleAssistService {
                         return claimParamVOS.size() > 0;
                     }
                 })
-                .map(new Function<List<VehicleClaimParamVO>, List<VehicleClaimParamVO>>() {
+                .map(new Function<List<VehicleClaimParamVO>, Map<Long, VehicleClaimParamVO>>() {
                     @Override
-                    public List<VehicleClaimParamVO> apply(List<VehicleClaimParamVO> objects) throws Exception {
+                    public Map<Long, VehicleClaimParamVO> apply(List<VehicleClaimParamVO> objects) throws Exception {
                         System.out.println("Run in VehicleClaimParamVO map and the size is: " + objects.size());
-                        List<VehicleClaimParamVO> results = Lists.newArrayList();
-                        if(objects.size() > 0) {
-                            System.out.println("map: " + gson.toJson(objects));
-                            results = claimVOLoadService.load(objects);
-                        }
-                        return results;
+                        return claimVOLoadService.load(objects);
                     }
-                }).flatMap(new Function<List<VehicleClaimParamVO>, Flowable<AuditReportVO>>() {
+                }).flatMap(new Function<Map<Long, VehicleClaimParamVO>, Flowable<AuditReportVO>>() {
                     @Override
-                    public Flowable<AuditReportVO> apply(List<VehicleClaimParamVO> claimParamVOS) throws Exception {
-                        if(claimParamVOS.size() > 0) {
-                            System.out.println("flatMap: " + gson.toJson(claimParamVOS));
-                            return Flowable.fromIterable(auditVOLoadService.load(claimParamVOS));
-                        }
-                        return Flowable.fromIterable(Lists.<AuditReportVO>newArrayList());
+                    public Flowable<AuditReportVO> apply(Map<Long, VehicleClaimParamVO> claimParamVOMap) throws Exception {
+                        return Flowable.fromIterable(auditVOLoadService.load(claimParamVOMap));
                     }
                 }).parallel()
                 .runOn(Schedulers.from(fixedThreadPool))
